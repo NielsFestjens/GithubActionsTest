@@ -36,4 +36,4 @@ jobs:
       - name: MsBuild
         run: |
            cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
-           .\MSBuild.exe $Env:GITHUB_WORKSPACE\src
+           .\MSBuild.exe $Env:GITHUB_WORKSPACE\src\.build\build.xml /t:CI /p:Configuration=Debug-Local
