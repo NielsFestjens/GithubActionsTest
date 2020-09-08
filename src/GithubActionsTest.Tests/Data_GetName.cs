@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
 using GithubActions.Core;
+using Xunit;
 
 namespace GithubActionsTest.Tests
 {
     public class Data_GetName
     {
-        [Xunit.Fact]
+        [Fact]
         public void It_returns_Niels()
         {
             var data = new Data();
