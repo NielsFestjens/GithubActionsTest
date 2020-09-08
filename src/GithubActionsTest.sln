@@ -9,6 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubActionsTest.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GithubActionsTest.Web", "GithubActionsTest.Web\GithubActionsTest.Web.csproj", "{B821128A-0F03-4ECB-B1F1-630541DEC7E9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{AC826E00-CF65-456F-A286-20ADF206BCC0}"
+	ProjectSection(SolutionItems) = preProject
+		.build\build.config.xml = .build\build.config.xml
+		.build\build.tasks.compilation.xml = .build\build.tasks.compilation.xml
+		.build\build.tasks.packaging.xml = .build\build.tasks.packaging.xml
+		.build\build.tasks.publishing.xml = .build\build.tasks.publishing.xml
+		.build\build.tasks.testing.xml = .build\build.tasks.testing.xml
+		.build\build.xml = .build\build.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

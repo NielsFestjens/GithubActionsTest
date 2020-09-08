@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$(MSBuildProjectDirectory)\build.config.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\build.tasks.compilation.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\build.tasks.packaging.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\build.tasks.publishing.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\build.tasks.testing.xml" />
+
+  <Target
+    Name="CI"
+    DependsOnTargets="
+      RestoreNuGetPackages;
+      CompileSolution;
+      RunTests;
+      GenerateWebPackage;  
+      "
+    />
+
+  <Target
+    Name="PublishToTest"
+    DependsOnTargets="
+      RestoreNuGetPackages;
+      CreateDirectories;      
+      PublishWebPackage;
+      "
+    />
+</Project>

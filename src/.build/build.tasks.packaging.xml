@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="RestoreNuGetPackages">
+    <Exec Command="&quot;$(NuGetPath)&quot; restore &quot;$(SolutionPath)&quot;" />
+  </Target>
+
+  <Target Name="GenerateWebPackage">
+    <MSBuild Projects="$(SolutionDir)\GithubActionsTest.Web\GithubActionsTest.Web.csproj" Targets="Build" Properties="Configuration=$(SolutionBuildConfiguration); DeployOnBuild=True; CreatePackageOnPublish=True;" />
+
+    <PropertyGroup>
+      <WebPackageInputDirectory>$(SolutionDir)\GithubActionsTest.Web\obj\$(SolutionBuildConfiguration)\Package\</WebPackageInputDirectory>
+      <WebPackageOutputDirectory>$(SolutionBuildArtifacts)\Nhs.Ui\</WebPackageOutputDirectory>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <WebPackageInputFiles Include="$(WebPackageInputDirectory)\*.*"/>
+    </ItemGroup>
+
+    <MakeDir Directories="$(WebPackageOutputDirectory)" />
+    <Copy SourceFiles="@(WebPackageInputFiles)" DestinationFolder="$(WebPackageOutputDirectory)" />
+  </Target>
+</Project>

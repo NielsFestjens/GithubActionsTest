@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="PublishWebPackage" Inputs="@ServerToDeployWebTo" Outputs="%(ServerToDeployWebTo.Identity)">
+		<Exec Command="$(SolutionBuildArtifacts)\Nhs.Ui\Nhs.Ui.deploy.cmd /y /m:%(ServerToDeployWebTo.Identity) /u:%(ServerToDeployWebTo.DeployUsername) /p:%(ServerToDeployWebTo.DeployPassword) -disableRule:BackupRule" />
+	</Target>
+</Project>

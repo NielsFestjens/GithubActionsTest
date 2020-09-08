@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Build settings">
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <SolutionDir>$(MSBuildProjectDirectory)\..</SolutionDir>
+    <SolutionPath>$(SolutionDir)\GithubActionsTest.sln</SolutionPath>
+    <SolutionBuildConfiguration>$(Configuration)</SolutionBuildConfiguration>
+    <SolutionBuildArtifacts>$(MSBuildProjectDirectory)\artifacts</SolutionBuildArtifacts>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Tools settings">
+    <XUnitMSBuildRunnerPath>$(SolutionDir)\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.net452.dll</XUnitMSBuildRunnerPath>
+    <ConfigTransformerPath>$(SolutionDir)\packages\Vonet.Deployment.ConfigTransformer.1.0.324.0\tools\Vonet.Deployment.ConfigTransformer.exe</ConfigTransformerPath>
+    <NuGetPath>$(SolutionDir)\.nuget\NuGet.exe</NuGetPath>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <PropertyGroup>
+        <SolutionBuildConfiguration>Release</SolutionBuildConfiguration>
+
+        <UnitTestDatabaseServer>10.100.162.28</UnitTestDatabaseServer>
+        <UnitTestDatabaseUsername>saHPW</UnitTestDatabaseUsername>
+        <UnitTestDatabasePassword>pw4saHPW</UnitTestDatabasePassword>
+        <UnitTestDatabaseName>Nhs-UnitTests</UnitTestDatabaseName>
+
+        <DeployMigrationTarget>3</DeployMigrationTarget>
+      </PropertyGroup>
+    </When>
+  </Choose>
+</Project>
