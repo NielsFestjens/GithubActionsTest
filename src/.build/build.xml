@@ -25,6 +25,7 @@
 	<UsingTask AssemblyFile="$(XUnitMSBuildRunnerPath)" TaskName="Xunit.Runner.MSBuild.xunit" />
 
 	<Target Name="RunTests">
+		<MakeDir Directories="artifacts" />
 		<xunit Assemblies="$(SolutionDir)\GithubActionsTest.Tests\bin\$(SolutionBuildConfiguration)\GithubActionsTest.Tests.dll" ParallelizeTestCollections="true" ContinueOnError="ErrorAndContinue" Html="artifacts\TestResults.html" />
 	</Target>
 
