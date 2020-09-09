@@ -9,6 +9,8 @@ on:
 
 jobs:
   build:
+    env:
+      TEST_OUTPUT_PATH: alternate-location
     runs-on: windows-2019
     steps:
       - name: checkout
@@ -20,9 +22,17 @@ jobs:
            .\MSBuild.exe $Env:GITHUB_WORKSPACE\src\.build\build.xml /t:CI /p:Configuration=Debug
            echo $Env:GITHUB_WORKSPACE\src\.build\artifacts\Nhs.Ui
      
-      - name: Upload Artifacts
+      - name: Upload Unit Tests artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: src\.build\artifacts\TestResults.html
+          if-no-files-found: error
+     
+      - name: Upload Web artifact
         uses: actions/upload-artifact@v2
         with:
           name: web-package
           path: src\.build\artifacts\Nhs.Ui
-          if-no-files-found: error 
+          if-no-files-found: error
+
