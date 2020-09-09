@@ -23,6 +23,7 @@ jobs:
            echo $Env:GITHUB_WORKSPACE\src\.build\artifacts\Nhs.Ui
      
       - name: Upload Unit Tests artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-results
