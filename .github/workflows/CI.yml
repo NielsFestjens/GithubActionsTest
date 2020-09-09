@@ -24,4 +24,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: web-package
-          path: $Env:GITHUB_WORKSPACE\src\.build\artifacts\Nhs.Ui
+          path: src\.build\artifacts\Nhs.Ui
+          if-no-files-found: error 
