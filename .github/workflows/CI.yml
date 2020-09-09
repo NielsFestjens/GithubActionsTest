@@ -18,6 +18,7 @@ jobs:
         run: |
            cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
            .\MSBuild.exe $Env:GITHUB_WORKSPACE\src\.build\build.xml /t:CI /p:Configuration=Debug
+           echo $Env:GITHUB_WORKSPACE\src\.build\artifacts\Nhs.Ui
      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
