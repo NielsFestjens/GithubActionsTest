@@ -1,14 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="$(MSBuildProjectDirectory)\build.config.xml" />
-  <Import Project="$(MSBuildProjectDirectory)\build.tasks.compilation.xml" />
-  <Import Project="$(MSBuildProjectDirectory)\build.tasks.packaging.xml" />
-  <Import Project="$(MSBuildProjectDirectory)\build.tasks.publishing.xml" />
-  <Import Project="$(MSBuildProjectDirectory)\build.tasks.testing.xml" />
+	<PropertyGroup Label="Settings">
+		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+		<SolutionDir>$(MSBuildProjectDirectory)\..</SolutionDir>
+		<SolutionPath>$(SolutionDir)\GithubActionsTest.sln</SolutionPath>
+		<SolutionBuildConfiguration>$(Configuration)</SolutionBuildConfiguration>
+		<SolutionBuildArtifacts>$(MSBuildProjectDirectory)\artifacts</SolutionBuildArtifacts>
+		<XUnitMSBuildRunnerPath>$(SolutionDir)\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.net452.dll</XUnitMSBuildRunnerPath>
+		<ConfigTransformerPath>$(SolutionDir)\packages\Vonet.Deployment.ConfigTransformer.1.0.324.0\tools\Vonet.Deployment.ConfigTransformer.exe</ConfigTransformerPath>
+		<NuGetPath>$(SolutionDir)\.nuget\NuGet.exe</NuGetPath>
+	</PropertyGroup>
 
-  <Target
-    Name="CI"
-    DependsOnTargets="
+	<Target Name="RestoreNuGetPackages">
+		<Exec Command="&quot;$(NuGetPath)&quot; restore &quot;$(SolutionPath)&quot;" />
+	</Target>
+
+	<Target Name="CompileSolution">
+		<MSBuild
+			Projects="$(SolutionPath)"
+			Targets="Rebuild"
+			Properties="Configuration=$(SolutionBuildConfiguration);" />
+	</Target>
+
+	<UsingTask AssemblyFile="$(XUnitMSBuildRunnerPath)" TaskName="Xunit.Runner.MSBuild.xunit" />
+
+	<Target Name="RunTests">
+		<xunit Assemblies="$(SolutionDir)\GithubActionsTest.Tests\bin\$(SolutionBuildConfiguration)\GithubActionsTest.Tests.dll" ParallelizeTestCollections="true" ContinueOnError="ErrorAndContinue" Html="artifacts\TestResults.html" />
+	</Target>
+
+	<Target Name="GenerateWebPackage">
+		<MSBuild Projects="$(SolutionDir)\GithubActionsTest.Web\GithubActionsTest.Web.csproj" Targets="Build" Properties="Configuration=$(SolutionBuildConfiguration); DeployOnBuild=True; CreatePackageOnPublish=True;" />
+
+		<PropertyGroup>
+			<WebPackageInputDirectory>$(SolutionDir)\GithubActionsTest.Web\obj\$(SolutionBuildConfiguration)\Package\</WebPackageInputDirectory>
+			<WebPackageOutputDirectory>$(SolutionBuildArtifacts)\Nhs.Ui\</WebPackageOutputDirectory>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<WebPackageInputFiles Include="$(WebPackageInputDirectory)\*.*"/>
+		</ItemGroup>
+
+		<MakeDir Directories="$(WebPackageOutputDirectory)" />
+		<Copy SourceFiles="@(WebPackageInputFiles)" DestinationFolder="$(WebPackageOutputDirectory)" />
+	</Target>
+
+	<Target Name="PublishWebPackage" Inputs="@ServerToDeployWebTo" Outputs="%(ServerToDeployWebTo.Identity)">
+		<Exec Command="$(SolutionBuildArtifacts)\Nhs.Ui\Nhs.Ui.deploy.cmd /y /m:%(ServerToDeployWebTo.Identity) /u:%(ServerToDeployWebTo.DeployUsername) /p:%(ServerToDeployWebTo.DeployPassword) -disableRule:BackupRule" />
+	</Target>
+
+	<Target
+	  Name="CI"
+	  DependsOnTargets="
       RestoreNuGetPackages;
       CompileSolution;
       RunTests;
@@ -16,9 +58,9 @@
       "
     />
 
-  <Target
-    Name="PublishToTest"
-    DependsOnTargets="
+	<Target
+	  Name="PublishToTest"
+	  DependsOnTargets="
       RestoreNuGetPackages;
       CreateDirectories;      
       PublishWebPackage;

@@ -1,7 +1,2 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <UsingTask AssemblyFile="$(XUnitMSBuildRunnerPath)" TaskName="Xunit.Runner.MSBuild.xunit" />
-
-  <Target Name="RunTests">
-    <xunit Assemblies="$(SolutionDir)\GithubActionsTest.Tests\bin\$(SolutionBuildConfiguration)\GithubActionsTest.Tests.dll" ParallelizeTestCollections="true" ContinueOnError="ErrorAndContinue" Html="artifacts\TestResults.html" />
-  </Target>
 </Project>
