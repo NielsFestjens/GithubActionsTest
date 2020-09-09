@@ -9,8 +9,6 @@ on:
 
 jobs:
   build:
-    env:
-      TEST_OUTPUT_PATH: alternate-location
     runs-on: windows-2019
     steps:
       - name: checkout
