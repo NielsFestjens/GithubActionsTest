@@ -13,5 +13,11 @@ namespace GithubActionsTest.Tests
             var name = data.GetName();
             name.Should().Be("Niels");
         }
+
+        [Fact]
+        public void Failing_Test()
+        {
+            true.Should().BeFalse("We're stupid");
+        }
     }
 }
